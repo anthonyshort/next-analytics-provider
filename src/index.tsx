@@ -48,17 +48,19 @@ interface MockAnalyticsProviderProps {
  * @param router Next router
  */
 function useRouteChangeAnalytics(analytics: SegmentClient, router: NextRouter) {
+  const { events } = router;
+
   const onRouteChangeComplete = useCallback(() => {
     analytics.page();
   }, [analytics]);
 
   // Call analytics.page whenever there is a page transition
   useEffect(() => {
-    router.events.on('routeChangeComplete', onRouteChangeComplete);
+    events.on('routeChangeComplete', onRouteChangeComplete);
     return () => {
-      router.events.off('routeChangeComplete', onRouteChangeComplete);
+      events.off('routeChangeComplete', onRouteChangeComplete);
     };
-  }, [router, onRouteChangeComplete]);
+  }, [events, onRouteChangeComplete]);
 }
 
 /**
